@@ -3,6 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "YOUR-ONESIGNAL-APP-ID",
+      path: "/the-better-me/",
+      serviceWorkerParam: { scope: "/the-better-me/" },
+      serviceWorkerPath: "OneSignalSDKWorker.js"
+    });
+  });
+</script>
   <title>The Better Me</title>
   <style>
     :root {
