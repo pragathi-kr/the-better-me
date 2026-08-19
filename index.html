@@ -1,0 +1,990 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Better Me</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0e1016;
+      --panel: rgba(25, 28, 38, 0.82);
+      --panel-strong: rgba(35, 38, 51, 0.92);
+      --ink: #f5efe6;
+      --muted: #b8adbe;
+      --soft: #a9d5c0;
+      --rose: #e6a3bd;
+      --gold: #d9bb72;
+      --blue: #91b9d6;
+      --edge: rgba(255, 255, 255, 0.13);
+      --shadow: 0 22px 70px rgba(0, 0, 0, 0.34);
+      --radius: 8px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 16% 18%, rgba(169, 213, 192, 0.18), transparent 31%),
+        radial-gradient(circle at 88% 10%, rgba(230, 163, 189, 0.13), transparent 29%),
+        radial-gradient(circle at 70% 86%, rgba(145, 185, 214, 0.16), transparent 34%),
+        linear-gradient(135deg, #0e1016 0%, #15141e 52%, #0e1016 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.25;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(circle at 50% 28%, black, transparent 74%);
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      border: 1px solid var(--edge);
+      border-radius: var(--radius);
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.08);
+      cursor: pointer;
+      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.24);
+    }
+
+    .app {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 30px 0 42px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .mark {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background:
+        linear-gradient(145deg, rgba(169, 213, 192, 0.9), rgba(230, 163, 189, 0.78)),
+        #1d2130;
+      color: #11131a;
+      box-shadow: 0 12px 30px rgba(169, 213, 192, 0.18);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.6rem, 4vw, 2.75rem);
+      letter-spacing: 0;
+    }
+
+    .brand p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .privacy {
+      max-width: 260px;
+      color: #d8d0da;
+      line-height: 1.45;
+      text-align: right;
+      font-size: 0.9rem;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(320px, 1.08fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .panel {
+      border: 1px solid var(--edge);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(22px);
+    }
+
+    .panel-inner {
+      padding: 20px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 750;
+      letter-spacing: 0;
+    }
+
+    .affirmation-card {
+      min-height: 250px;
+      display: grid;
+      align-content: space-between;
+      gap: 24px;
+      padding: 26px;
+      overflow: hidden;
+      position: relative;
+      background:
+        linear-gradient(135deg, rgba(245, 239, 230, 0.08), rgba(169, 213, 192, 0.1)),
+        var(--panel-strong);
+    }
+
+    .affirmation-card::after {
+      content: "";
+      position: absolute;
+      right: -44px;
+      bottom: -72px;
+      width: 190px;
+      height: 190px;
+      border: 1px solid rgba(217, 187, 114, 0.42);
+      border-radius: 50%;
+    }
+
+    .affirmation {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.85rem, 4vw, 3.4rem);
+      line-height: 1.08;
+      color: #fff9ef;
+    }
+
+    .card-actions {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .primary {
+      background: linear-gradient(135deg, rgba(169, 213, 192, 0.26), rgba(230, 163, 189, 0.2));
+    }
+
+    .ghost,
+    .primary {
+      min-height: 42px;
+      padding: 0 14px;
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--edge);
+      border-radius: var(--radius);
+      color: var(--ink);
+      background: rgba(7, 8, 12, 0.42);
+      outline: none;
+      transition: border-color 160ms ease, background 160ms ease;
+    }
+
+    input {
+      min-height: 42px;
+      padding: 0 12px;
+    }
+
+    textarea {
+      min-height: 92px;
+      padding: 12px;
+      resize: vertical;
+      line-height: 1.45;
+    }
+
+    select {
+      min-height: 42px;
+      padding: 0 12px;
+      color: var(--ink);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+        #151821;
+      appearance: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: rgba(169, 213, 192, 0.66);
+      background: rgba(7, 8, 12, 0.56);
+    }
+
+    .chips,
+    .mood-grid,
+    .history-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .chip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--edge);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.06);
+      color: #f1e8ee;
+      line-height: 1.35;
+    }
+
+    .delete {
+      width: 30px;
+      height: 30px;
+      flex: 0 0 30px;
+      display: grid;
+      place-items: center;
+      color: #f0c8d4;
+      background: rgba(230, 163, 189, 0.1);
+    }
+
+    .mood-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .mood {
+      min-height: 80px;
+      display: grid;
+      place-items: center;
+      gap: 4px;
+      padding: 9px 6px;
+      color: #ece2ea;
+    }
+
+    .mood span:first-child {
+      font-size: 1.6rem;
+    }
+
+    .mood span:last-child {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .mood.active {
+      border-color: rgba(169, 213, 192, 0.76);
+      background: rgba(169, 213, 192, 0.18);
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .wide {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: grid;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .diary-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .saved-note {
+      color: var(--soft);
+      font-size: 0.86rem;
+      min-height: 20px;
+    }
+
+    .history-item {
+      border: 1px solid var(--edge);
+      border-radius: var(--radius);
+      padding: 13px;
+      background: rgba(255, 255, 255, 0.055);
+    }
+
+    .history-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+      color: #f6eee7;
+      font-weight: 700;
+    }
+
+    .history-item p {
+      margin: 7px 0 0;
+      color: #d7cfda;
+      line-height: 1.45;
+      font-size: 0.92rem;
+    }
+
+    .empty {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .day {
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid var(--edge);
+      background: rgba(255, 255, 255, 0.045);
+      color: #e8dde6;
+      font-size: 0.8rem;
+    }
+
+    .day.filled {
+      background: color-mix(in srgb, var(--mood-color) 34%, rgba(255,255,255,0.06));
+      border-color: color-mix(in srgb, var(--mood-color) 72%, rgba(255,255,255,0.2));
+    }
+
+    .quote-strip {
+      display: grid;
+      grid-template-columns: 76px 1fr;
+      gap: 14px;
+      align-items: center;
+      padding: 16px;
+      background: rgba(217, 187, 114, 0.09);
+      border-top: 1px solid rgba(217, 187, 114, 0.18);
+    }
+
+    .moon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 67% 34%, #11131a 0 21px, transparent 22px),
+        linear-gradient(145deg, #f8e8bc, #d9bb72);
+      box-shadow: 0 0 36px rgba(217, 187, 114, 0.22);
+    }
+
+    .quote-strip p {
+      margin: 0;
+      color: #dfd4dd;
+      line-height: 1.45;
+    }
+
+    .reminder-panel {
+      display: grid;
+      gap: 13px;
+      margin-top: 14px;
+      padding: 14px;
+      border: 1px solid rgba(169, 213, 192, 0.18);
+      border-radius: var(--radius);
+      background: rgba(169, 213, 192, 0.07);
+    }
+
+    .reminder-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .reminder-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      min-height: 34px;
+      align-items: center;
+      padding: 0 11px;
+      border: 1px solid var(--edge);
+      border-radius: 999px;
+      color: #dcd4de;
+      background: rgba(0, 0, 0, 0.18);
+      font-size: 0.82rem;
+    }
+
+    @media (max-width: 880px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .privacy {
+        max-width: none;
+        text-align: left;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .app {
+        width: min(100% - 22px, 1180px);
+        padding-top: 18px;
+      }
+
+      .field-grid,
+      .input-row,
+      .reminder-row {
+        grid-template-columns: 1fr;
+      }
+
+      .mood-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .affirmation-card,
+      .panel-inner {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3.5c2.5 3.1 6.5 5.2 6.5 10a6.5 6.5 0 0 1-13 0c0-4.8 4-6.9 6.5-10Z" stroke="currentColor" stroke-width="1.8" />
+            <path d="M8.4 14.2c1.4 1.4 5.6 1.4 7.1 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div>
+          <h1>The Better Me</h1>
+          <p>Affirmations, moods, and gentle daily reflection.</p>
+        </div>
+      </div>
+      <div class="privacy">Saved only in this browser on this device. A different device starts fresh.</div>
+    </header>
+
+    <section class="layout">
+      <div class="stack">
+        <article class="panel affirmation-card">
+          <p class="affirmation" id="affirmationText">I am allowed to grow slowly and still be proud of myself.</p>
+          <div class="card-actions">
+            <button class="primary" id="newAffirmationBtn" type="button">New affirmation</button>
+            <button class="ghost" id="saveShownBtn" type="button">Save this one</button>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-inner">
+            <div class="section-head">
+              <h2>My Affirmations</h2>
+            </div>
+            <form class="input-row" id="affirmationForm">
+              <input id="affirmationInput" maxlength="180" placeholder="Add your own affirmation..." autocomplete="off" />
+              <button class="primary" type="submit">Add</button>
+            </form>
+            <div class="chips" id="affirmationList" style="margin-top: 12px;"></div>
+            <div class="reminder-panel">
+              <div class="section-head" style="margin-bottom: 0;">
+                <h2>Affirmation Notifications</h2>
+                <span class="status-pill" id="notificationStatus">Off</span>
+              </div>
+              <div class="reminder-row">
+                <label>
+                  Reminder every
+                  <select id="reminderInterval">
+                    <option value="15">15 minutes</option>
+                    <option value="30">30 minutes</option>
+                    <option value="60">1 hour</option>
+                    <option value="120">2 hours</option>
+                    <option value="240">4 hours</option>
+                  </select>
+                </label>
+                <label>
+                  Quiet label
+                  <input id="reminderTitle" maxlength="40" placeholder="The Better Me" />
+                </label>
+              </div>
+              <div class="reminder-actions">
+                <button class="primary" id="enableNotificationsBtn" type="button">Allow notifications</button>
+                <button class="ghost" id="toggleRemindersBtn" type="button">Start reminders</button>
+                <button class="ghost" id="testNotificationBtn" type="button">Test now</button>
+              </div>
+              <p class="empty" id="notificationHelp">Reminders work on this device while this page is open.</p>
+            </div>
+          </div>
+          <div class="quote-strip">
+            <div class="moon" aria-hidden="true"></div>
+            <p>Small check-ins count. This space remembers what you write here, privately on this device.</p>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-inner">
+            <div class="section-head">
+              <h2>Mood Tracker</h2>
+              <button class="ghost" id="clearTodayMoodBtn" type="button">Clear today</button>
+            </div>
+            <div class="mood-grid" id="moodGrid"></div>
+            <div class="calendar" id="moodCalendar" style="margin-top: 14px;"></div>
+          </div>
+        </article>
+      </div>
+
+      <div class="stack">
+        <article class="panel">
+          <div class="panel-inner">
+            <div class="section-head">
+              <h2>Today&apos;s Diary</h2>
+              <input id="entryDate" type="date" style="max-width: 170px;" />
+            </div>
+            <form id="diaryForm">
+              <div class="field-grid">
+                <label>
+                  Today I felt
+                  <textarea id="felt" placeholder="Name the feeling gently."></textarea>
+                </label>
+                <label>
+                  A thought I had
+                  <textarea id="thought" placeholder="What kept returning to your mind?"></textarea>
+                </label>
+                <label>
+                  How I responded
+                  <textarea id="responded" placeholder="What did you do, say, avoid, or choose?"></textarea>
+                </label>
+                <label>
+                  Tomorrow I&apos;ll try
+                  <textarea id="tomorrow" placeholder="One kind next step."></textarea>
+                </label>
+                <label class="wide">
+                  About the day and emotions
+                  <textarea id="day" style="min-height: 150px;" placeholder="Write freely about your day, your emotions, the little things, the heavy things, the soft things."></textarea>
+                </label>
+              </div>
+              <div class="diary-actions">
+                <span class="saved-note" id="savedNote"></span>
+                <div>
+                  <button class="ghost" id="clearEntryBtn" type="button">Clear form</button>
+                  <button class="primary" type="submit">Save entry</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-inner">
+            <div class="section-head">
+              <h2>Past Entries</h2>
+            </div>
+            <div class="history-list" id="historyList"></div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "the-better-me-v1";
+    const todayKey = () => new Date().toISOString().slice(0, 10);
+    const defaults = {
+      affirmations: [
+        "I am allowed to grow slowly and still be proud of myself.",
+        "My feelings are real, and they do not have to control my whole day.",
+        "I can begin again as many times as I need.",
+        "I deserve rest without earning it first.",
+        "I am becoming someone I can trust.",
+        "A small gentle step still counts.",
+        "I can hold hope and honesty at the same time."
+      ],
+      moods: {},
+      entries: {},
+      reminders: {
+        enabled: false,
+        intervalMinutes: 60,
+        title: "The Better Me"
+      }
+    };
+
+    const moodOptions = [
+      { key: "soft", icon: "calm", label: "Calm", color: "#a9d5c0" },
+      { key: "bright", icon: "light", label: "Good", color: "#d9bb72" },
+      { key: "heavy", icon: "low", label: "Low", color: "#91b9d6" },
+      { key: "tender", icon: "heart", label: "Tender", color: "#e6a3bd" },
+      { key: "stormy", icon: "cloud", label: "Hard", color: "#a89bc8" }
+    ];
+
+    const moodSvg = {
+      calm: '<svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M5 12.5c2.2-2.2 4.2-2.2 6.4 0s4.2 2.2 6.6 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M5 16.5c2.2-2.2 4.2-2.2 6.4 0s4.2 2.2 6.6 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+      light: '<svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M12 4v2.2M12 17.8V20M4 12h2.2M17.8 12H20M6.3 6.3l1.6 1.6M16.1 16.1l1.6 1.6M17.7 6.3l-1.6 1.6M7.9 16.1l-1.6 1.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="12" r="3.6" stroke="currentColor" stroke-width="1.7"/></svg>',
+      low: '<svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M7 17h10M8 12h8M10 7h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+      heart: '<svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M12 20s-7-4.3-7-10.1C5 7.1 7 5.3 9.4 5.3c1.4 0 2.3.7 2.6 1.3.3-.6 1.2-1.3 2.6-1.3C17 5.3 19 7.1 19 9.9 19 15.7 12 20 12 20Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>',
+      cloud: '<svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M7.4 17.5h9.1a4 4 0 0 0 .2-8 5.2 5.2 0 0 0-9.9 1.6 3.2 3.2 0 0 0 .6 6.4Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>'
+    };
+
+    let state = loadState();
+    let currentAffirmation = state.affirmations[0];
+    let reminderTimer = null;
+
+    const $ = (id) => document.getElementById(id);
+    const fields = ["felt", "thought", "responded", "tomorrow", "day"];
+
+    function loadState() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        return {
+          affirmations: Array.isArray(saved?.affirmations) && saved.affirmations.length ? saved.affirmations : defaults.affirmations,
+          moods: saved?.moods || {},
+          entries: saved?.entries || {},
+          reminders: {
+            ...defaults.reminders,
+            ...(saved?.reminders || {})
+          }
+        };
+      } catch {
+        return structuredClone(defaults);
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function setSavedNote(text) {
+      $("savedNote").textContent = text;
+      window.clearTimeout(setSavedNote.timer);
+      setSavedNote.timer = window.setTimeout(() => $("savedNote").textContent = "", 2200);
+    }
+
+    function renderAffirmation() {
+      $("affirmationText").textContent = currentAffirmation;
+    }
+
+    function pickAffirmation() {
+      const list = state.affirmations.length ? state.affirmations : defaults.affirmations;
+      currentAffirmation = list[Math.floor(Math.random() * list.length)];
+      renderAffirmation();
+    }
+
+    function renderAffirmationList() {
+      const list = $("affirmationList");
+      list.innerHTML = "";
+      if (!state.affirmations.length) {
+        list.innerHTML = '<p class="empty">Your saved affirmations will appear here.</p>';
+        return;
+      }
+      state.affirmations.forEach((text, index) => {
+        const item = document.createElement("div");
+        item.className = "chip";
+        item.innerHTML = `<span>${escapeHtml(text)}</span><button class="delete" type="button" aria-label="Delete affirmation">&times;</button>`;
+        item.querySelector("button").addEventListener("click", () => {
+          state.affirmations.splice(index, 1);
+          saveState();
+          renderAffirmationList();
+          if (currentAffirmation === text) pickAffirmation();
+        });
+        list.appendChild(item);
+      });
+    }
+
+    function renderNotificationSettings() {
+      $("reminderInterval").value = String(state.reminders.intervalMinutes);
+      $("reminderTitle").value = state.reminders.title;
+      $("toggleRemindersBtn").textContent = state.reminders.enabled ? "Pause reminders" : "Start reminders";
+
+      const supported = "Notification" in window;
+      const permission = supported ? Notification.permission : "unsupported";
+      const statusText = state.reminders.enabled ? "On" : "Off";
+      $("notificationStatus").textContent = `${statusText} · ${permission}`;
+      $("enableNotificationsBtn").disabled = !supported || permission === "granted";
+      $("testNotificationBtn").disabled = !supported || permission !== "granted";
+      $("toggleRemindersBtn").disabled = !supported;
+
+      if (!supported) {
+        $("notificationHelp").textContent = "This browser does not support notifications.";
+      } else if (permission === "denied") {
+        $("notificationHelp").textContent = "Notifications are blocked. Change this site permission in your browser settings to use reminders.";
+      } else if (permission === "granted") {
+        $("notificationHelp").textContent = "Reminders work on this device while this page is open.";
+      } else {
+        $("notificationHelp").textContent = "Click allow first, then start reminders.";
+      }
+    }
+
+    async function requestNotificationPermission() {
+      if (!("Notification" in window)) return;
+      await Notification.requestPermission();
+      if (Notification.permission === "granted") {
+        showAffirmationNotification("Notifications are ready.");
+      }
+      renderNotificationSettings();
+    }
+
+    function showAffirmationNotification(overrideText) {
+      if (!("Notification" in window) || Notification.permission !== "granted") return false;
+      const list = state.affirmations.length ? state.affirmations : defaults.affirmations;
+      const text = overrideText || list[Math.floor(Math.random() * list.length)];
+      new Notification(state.reminders.title || "The Better Me", {
+        body: text,
+        tag: "the-better-me-affirmation",
+        renotify: true,
+        silent: false
+      });
+      return true;
+    }
+
+    function startReminderTimer() {
+      window.clearInterval(reminderTimer);
+      reminderTimer = null;
+      if (!("Notification" in window) || !state.reminders.enabled || Notification.permission !== "granted") return;
+      reminderTimer = window.setInterval(() => {
+        showAffirmationNotification();
+      }, state.reminders.intervalMinutes * 60 * 1000);
+    }
+
+    function updateReminderSetting(key, value) {
+      state.reminders[key] = value;
+      saveState();
+      startReminderTimer();
+      renderNotificationSettings();
+    }
+
+    async function toggleReminders() {
+      if (!("Notification" in window)) return;
+      if (Notification.permission !== "granted") {
+        await requestNotificationPermission();
+      }
+      if (Notification.permission !== "granted") return;
+      state.reminders.enabled = !state.reminders.enabled;
+      saveState();
+      startReminderTimer();
+      renderNotificationSettings();
+      if (state.reminders.enabled) {
+        showAffirmationNotification("Your affirmation reminders are on.");
+      }
+    }
+
+    function renderMoods() {
+      const date = $("entryDate").value || todayKey();
+      const grid = $("moodGrid");
+      grid.innerHTML = "";
+      moodOptions.forEach((mood) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `mood ${state.moods[date] === mood.key ? "active" : ""}`;
+        button.style.color = mood.color;
+        button.innerHTML = `<span>${moodSvg[mood.icon]}</span><span>${mood.label}</span>`;
+        button.addEventListener("click", () => {
+          state.moods[date] = mood.key;
+          saveState();
+          renderMoods();
+          renderCalendar();
+        });
+        grid.appendChild(button);
+      });
+    }
+
+    function renderCalendar() {
+      const calendar = $("moodCalendar");
+      calendar.innerHTML = "";
+      const dates = Array.from({ length: 28 }, (_, index) => {
+        const d = new Date();
+        d.setDate(d.getDate() - (27 - index));
+        return d;
+      });
+      dates.forEach((date) => {
+        const key = date.toISOString().slice(0, 10);
+        const mood = moodOptions.find((item) => item.key === state.moods[key]);
+        const day = document.createElement("div");
+        day.className = `day ${mood ? "filled" : ""}`;
+        day.style.setProperty("--mood-color", mood?.color || "#ffffff");
+        day.title = mood ? `${key}: ${mood.label}` : key;
+        day.textContent = date.getDate();
+        calendar.appendChild(day);
+      });
+    }
+
+    function loadEntry(date) {
+      const entry = state.entries[date] || {};
+      fields.forEach((field) => {
+        $(field).value = entry[field] || "";
+      });
+      renderMoods();
+    }
+
+    function saveEntry() {
+      const date = $("entryDate").value || todayKey();
+      const entry = {};
+      fields.forEach((field) => entry[field] = $(field).value.trim());
+      state.entries[date] = entry;
+      saveState();
+      renderHistory();
+      setSavedNote("Saved on this device.");
+    }
+
+    function renderHistory() {
+      const history = $("historyList");
+      history.innerHTML = "";
+      const dates = Object.keys(state.entries).sort().reverse();
+      const filledDates = dates.filter((date) => fields.some((field) => state.entries[date][field]));
+      if (!filledDates.length) {
+        history.innerHTML = '<p class="empty">Once you save an entry, it will stay here in this browser.</p>';
+        return;
+      }
+      filledDates.slice(0, 8).forEach((date) => {
+        const entry = state.entries[date];
+        const mood = moodOptions.find((item) => item.key === state.moods[date]);
+        const item = document.createElement("div");
+        item.className = "history-item";
+        item.innerHTML = `
+          <div class="history-top"><span>${formatDate(date)}</span><span>${mood ? mood.label : "No mood"}</span></div>
+          ${entry.day ? `<p>${escapeHtml(entry.day)}</p>` : ""}
+          ${entry.tomorrow ? `<p><strong>Tomorrow:</strong> ${escapeHtml(entry.tomorrow)}</p>` : ""}
+        `;
+        item.addEventListener("click", () => {
+          $("entryDate").value = date;
+          loadEntry(date);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+        history.appendChild(item);
+      });
+    }
+
+    function clearForm() {
+      fields.forEach((field) => $(field).value = "");
+      setSavedNote("Form cleared. Save if you want to replace this entry.");
+    }
+
+    function escapeHtml(value) {
+      return value.replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[char]));
+    }
+
+    function formatDate(date) {
+      return new Date(`${date}T12:00:00`).toLocaleDateString(undefined, {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+      });
+    }
+
+    $("entryDate").value = todayKey();
+    $("newAffirmationBtn").addEventListener("click", pickAffirmation);
+    $("saveShownBtn").addEventListener("click", () => {
+      if (!state.affirmations.includes(currentAffirmation)) {
+        state.affirmations.unshift(currentAffirmation);
+        saveState();
+        renderAffirmationList();
+      }
+    });
+    $("affirmationForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const text = $("affirmationInput").value.trim();
+      if (!text) return;
+      state.affirmations.unshift(text);
+      currentAffirmation = text;
+      $("affirmationInput").value = "";
+      saveState();
+      renderAffirmation();
+      renderAffirmationList();
+    });
+    $("entryDate").addEventListener("change", () => loadEntry($("entryDate").value));
+    $("diaryForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      saveEntry();
+    });
+    $("clearEntryBtn").addEventListener("click", clearForm);
+    $("clearTodayMoodBtn").addEventListener("click", () => {
+      delete state.moods[$("entryDate").value || todayKey()];
+      saveState();
+      renderMoods();
+      renderCalendar();
+    });
+    $("enableNotificationsBtn").addEventListener("click", requestNotificationPermission);
+    $("toggleRemindersBtn").addEventListener("click", toggleReminders);
+    $("testNotificationBtn").addEventListener("click", () => {
+      const sent = showAffirmationNotification();
+      $("notificationHelp").textContent = sent ? "Sent a test affirmation." : "Allow notifications first.";
+    });
+    $("reminderInterval").addEventListener("change", (event) => {
+      updateReminderSetting("intervalMinutes", Number(event.target.value));
+    });
+    $("reminderTitle").addEventListener("input", (event) => {
+      updateReminderSetting("title", event.target.value.trim() || "The Better Me");
+    });
+
+    renderAffirmation();
+    renderAffirmationList();
+    renderNotificationSettings();
+    startReminderTimer();
+    loadEntry($("entryDate").value);
+    renderCalendar();
+    renderHistory();
+  </script>
+</body>
+</html>
